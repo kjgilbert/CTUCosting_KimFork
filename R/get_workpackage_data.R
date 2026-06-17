@@ -93,12 +93,12 @@ get_wp_df <- function(d){
 
   var <- wp <- hours <- service <- desc <- NULL
 
-  # print(d)
-  if(nrow(d) > 0){
+  # Bulletproof check for missing, NULL, or empty data
+  if(!is.null(d) && length(nrow(d)) > 0 && nrow(d) > 0){
     d |>
       mutate(across(everything(), as.character)) |>
       # select(-c(record_id, redcap_event_name, redcap_repeat_instrument, redcap_repeat_instance),
-      #        -matches("date|total_hours|cost|notes|author|complete")) %>%
+      #         -matches("date|total_hours|cost|notes|author|complete")) %>%
       select(matches("_[[:digit:]]{1,2}")) |>
       pivot_longer(matches("(hours|wp|desc|units)_"),
                    names_sep = "_", names_to = c("service", "var", "item")) |>
@@ -109,6 +109,9 @@ get_wp_df <- function(d){
              Hours = hours) |>
       select(service:wp) |>
       filter(!is.na(desc) & desc != "")
+  } else {
+    # Return NULL safely if there are no rows or data is missing
+    return(NULL)
   }
 }
 
