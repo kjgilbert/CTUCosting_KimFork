@@ -1,4 +1,4 @@
-# CTUCosting 0.8.0 (2026-06-17)
+# CTUCosting 0.8.1 (2026-06-17)
 
 * update new clinic heads, add human genetics clinic
 
